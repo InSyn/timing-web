@@ -20,6 +20,24 @@
 
     </router-link>
 
+    <router-link tag="div"
+                 class="menuItem competitors"
+                 :to="{name: 'races'}"
+                 active-class="link-active">
+
+      <div class="itemButton">Заезды</div>
+
+    </router-link>
+
+    <router-link tag="div"
+                 class="menuItem competitors"
+                 :to="{name: 'timing'}"
+                 active-class="link-active">
+
+      <div class="itemButton">Хронометраж</div>
+
+    </router-link>
+
   </div>
 
 </template>

@@ -121,13 +121,21 @@
 
         animateInput(elem, ev){
 
-          elem.addEventListener(ev, ($event) =>{
+          if (elem) {
 
-            $event.target.value === '' ?
-              $event.target.parentElement.firstChild.classList.toggle('labelActive') :
-              null
+            elem.addEventListener(ev, ($event) => {
 
-          });
+              if ($event.target.parentElement.firstChild) {
+
+                $event.target.value === '' ?
+                        $event.target.parentElement.firstChild.classList.toggle('labelActive') :
+                        null
+
+              }
+
+            });
+
+          }
 
         }
 

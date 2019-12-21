@@ -20,8 +20,6 @@
 
     created(){
 
-      this.loadSportsmen();
-
     },
 
     components: {

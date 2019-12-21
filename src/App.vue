@@ -43,7 +43,7 @@
   }
 
   html{
-    background: url("./assets/background/background.png") no-repeat fixed;
+    background: url("./assets/background/background.jpg") no-repeat fixed;
     background-size: cover;
     height: 100%;
 

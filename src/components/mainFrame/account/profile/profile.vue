@@ -1,15 +1,27 @@
 <template>
     <div class="profileWrapper">
-
+        Вы вошли как {{accountRole}}
     </div>
 </template>
 
 <script>
+    import {mapGetters, mapActions} from 'vuex'
+
     export default {
-        name: "profile"
+        name: "profile",
+        computed: {
+            ...mapGetters('authorization', {
+                accountRole: 'accountRole'
+            })
+        },
+        methods:{
+            ...mapActions('profile', {
+
+            })
+        }
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>

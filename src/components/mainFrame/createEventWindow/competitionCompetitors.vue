@@ -10,8 +10,13 @@
              @click="addCompetitor(competitorData) + cleanData()">
           Добавить участника
         </div>
-        <div class="competitorsButton changeCompetitor"> Изменить участника </div>
-        <div class="competitorsButton deleteCompetitor"> Удалить участника </div>
+        <div class="competitorsButton changeCompetitor">
+          Изменить участника
+        </div>
+        <div class="competitorsButton deleteCompetitor"
+             @click="deleteCompetitor(competitorChosen)+cleanData()">
+          Удалить участника
+        </div>
 
       </div>
 
@@ -23,7 +28,9 @@
         </div>
         <div class="competitorDataInput">
           <label for="competitorTid">T-Id</label>
-          <input v-model="competitorData.tid" type="text" id="competitorTid">
+          <input v-model="competitorData.tid" type="text" id="competitorTid"
+                 @input="getCompetitor(competitorData.tid)"
+                 @keyup.enter="setChosenCompetitor" >
         </div>
         <div class="competitorDataInput">
           <label for="competitorFisCode">FIS-Code</label>
@@ -60,6 +67,12 @@
 
       </div>
 
+
+      <div class="competitorsButton createCompetition"
+           @click="sendCompetition(createdCompetitionData)">
+        Создать соревнование
+      </div>
+
     </div>
 
     <div class="competitorsList">
@@ -82,7 +95,7 @@
       <div class="competitorsListBody">
 
         <div class="competitorsListRow"
-             v-for="(competitor, index) in competitors" :key="index"
+             v-for="(competitor, index) in createdCompetitionData.competitors" :key="index"
              @click="chooseCompetitor($event.target) + setChosenCompetitor()">
 
           <div class="bib">{{competitor.bib}}</div>
@@ -118,21 +131,25 @@
 
       for (let input in competitorDataInputs) {
 
-        competitorDataInputs[input].lastChild.addEventListener('focus', ($event) =>{
+          if (competitorDataInputs[input].lastChild) {
 
-          $event.target.value === '' ?
-                  $event.target.parentElement.firstChild.classList.toggle('labelActive') :
-                  null
+              competitorDataInputs[input].lastChild.addEventListener('focus', ($event) => {
 
-        });
+                  $event.target.value === '' ?
+                      $event.target.parentElement.firstChild.classList.toggle('labelActive') :
+                      null
 
-        competitorDataInputs[input].lastChild.addEventListener('blur', ($event) =>{
+              });
 
-          $event.target.value === '' ?
-                  $event.target.parentElement.firstChild.classList.toggle('labelActive') :
-                  null
+              competitorDataInputs[input].lastChild.addEventListener('blur', ($event) => {
 
-        })
+                  $event.target.value === '' ?
+                      $event.target.parentElement.firstChild.classList.toggle('labelActive') :
+                      null
+
+              })
+
+          }
 
       }
 
@@ -165,9 +182,14 @@
 
       ...mapGetters('competitors', {
 
-        competitors: 'competitors',
+        // competitors: 'competitors',
         competitorChosen: 'competitorChosen'
 
+      }),
+
+      ...mapGetters('createdCompetition', {
+        createdCompetitionData: 'createdCompetitionData',
+        competitors: 'competitors'
       })
 
     },
@@ -175,8 +197,15 @@
     methods: {
 
       ...mapActions('competitors', {
+        // addCompetitor: 'addCompetitor',
+        chooseCompetitor: 'chooseCompetitor',
+        getCompetitor: 'getCompetitor'
+      }),
+
+      ...mapActions('createdCompetition', {
         addCompetitor: 'addCompetitor',
-        chooseCompetitor: 'chooseCompetitor'
+        sendCompetition: 'sendCompetition',
+        deleteCompetitor: 'deleteCompetitor'
       }),
 
       cleanData(){
@@ -185,7 +214,8 @@
 
         for (let i in data) {
 
-          data[i] = ''
+          if (data[i])
+            data[i] = ''
 
         }
 
@@ -199,11 +229,15 @@
 
         for (let input in competitorDataInputs) {
 
-          let label = competitorDataInputs[input].firstChild;
+            if (competitorDataInputs[input].firstChild) {
 
-          label.classList.contains('labelActive')?
-                  label.classList.toggle('labelActive'):
-                  null
+                let label = competitorDataInputs[input].firstChild;
+
+                label.classList.contains('labelActive') ?
+                    label.classList.toggle('labelActive') :
+                    null
+
+            }
 
         }
 
@@ -215,11 +249,17 @@
 
         for (let i in competitorDataInputs) {
 
-          let label = competitorDataInputs[i].firstChild;
+            if (competitorDataInputs[i].firstChild) {
 
-          if (!label.classList.contains('labelActive')){
-            label.classList.toggle('labelActive')
-          }
+                let label = competitorDataInputs[i].firstChild;
+
+                if (!label.classList.contains('labelActive')) {
+
+                    label.classList.toggle('labelActive')
+
+                }
+
+            }
 
         }
 
@@ -231,15 +271,25 @@
 
       setChosenCompetitor(){
 
+        if(this.competitorChosen.bib)
         this.competitorData.bib = this.competitorChosen.bib;
+        if(this.competitorChosen.tid)
         this.competitorData.tid = this.competitorChosen.tid;
+        if(this.competitorChosen.fisCode)
         this.competitorData.fisCode = this.competitorChosen.fisCode;
+        if(this.competitorChosen.fullName)
         this.competitorData.fullName = this.competitorChosen.fullName;
+        if(this.competitorChosen.birthYear)
         this.competitorData.birthYear = this.competitorChosen.birthYear;
+        if(this.competitorChosen.rank)
         this.competitorData.rank = this.competitorChosen.rank;
+        if(this.competitorChosen.city)
         this.competitorData.city = this.competitorChosen.city;
+        if(this.competitorChosen.region)
         this.competitorData.region = this.competitorChosen.region;
+        if(this.competitorChosen.school)
         this.competitorData.school = this.competitorChosen.school;
+        if(this.competitorChosen.team)
         this.competitorData.team = this.competitorChosen.team;
 
         this.checkLabelsAtChoose()
@@ -264,7 +314,7 @@
 
     .competitorsMenu{
       min-width: 200px;
-      padding: 16px 0;
+      padding: 16px 32px;
 
       .competitorsControls{
 
@@ -287,6 +337,25 @@
           &:hover{
             background-color: lighten($buttonBackgroundColor, 10%)
           }
+        }
+      }
+      .createCompetition{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $buttonBackgroundColor;
+        color: $buttonTextColor;
+        outline: 0 none;
+        border: none;
+        padding: 8px 0;
+        font-size: 0.8rem;
+        letter-spacing: 0.15px;
+        margin-top: 32px;
+        transition: background-color $transition-time-default;
+        cursor: pointer;
+
+        &:hover{
+          background-color: lighten($buttonBackgroundColor, 10%)
         }
       }
       .competitorData{
@@ -339,9 +408,12 @@
         width: 100%;
 
         *{
-          padding: 16px 8px;
-          border-right: 1px solid #c2c2c2;
-          border-bottom: 1px solid #c2c2c2;
+            padding: 8px 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid $borderColor;
+            border-bottom: 1px solid $borderColor;
 
           &:last-child{
             border-right: none;
@@ -412,7 +484,7 @@
             align-items: center;
             padding: 0 8px;
             background: transparent;
-            border-right: 1px solid #c2c2c2;
+            border-right: 1px solid $borderColor;
             overflow: hidden;
 
             &:last-child{
@@ -465,9 +537,12 @@
             flex-shrink: 0;
             width: 150px;
           }
+            &:hover{
+                background: rgba(255,255,255,0.2);
+            }
         }
         .competitorsListRow__chosen{
-          background-color: rgba(255,255,255, 0.2);
+          background-color: rgba(255,255,255, 0.4);
         }
       }
     }

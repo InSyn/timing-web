@@ -1,6 +1,6 @@
 <template>
   <div class="emptyPageWrapper">
-    СТРАНИЦА НЕ НАЙДЕНА
+    В РАЗРАБОТКЕ
   </div>
 </template>
 

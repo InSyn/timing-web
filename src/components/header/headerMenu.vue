@@ -11,9 +11,10 @@
 
       </div>
 
-      <router-link class="headerLogin" tag="div" to="/login">
+      <router-link class="headerLogin" tag="div" :to="{name: 'authorization'}">
 
         <a href="#"></a>
+        <div class="user">{{accountRole}}</div>
 
       </router-link>
 
@@ -30,8 +31,11 @@
       name: "headerMenu",
 
       computed: {
-        ...mapGetters('headerMenu',{
+        ...mapGetters('headerMenu', {
           menuList: 'menuList'
+        }),
+        ...mapGetters('authorization', {
+          accountRole: 'accountRole'
         })
       }
 
@@ -87,6 +91,10 @@
       font-size: 32px;
       margin-left: 72px;
       font-family: 'Segoe MDL2 Assets', sans-serif;
+
+      .user{
+        font-size: 0.8rem;
+      }
     }
   }
 

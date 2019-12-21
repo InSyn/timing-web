@@ -13,10 +13,6 @@ export default {
         url:'/competitions'
       },
       {
-        title:'Хронометраж',
-        url:'/timing'
-      },
-      {
         title:'Рейтинги',
         url:'/ratings'
       },

@@ -1,13 +1,32 @@
 import Vue from "vue";
 
 export default {
-
     namespaced: true,
 
     state: {
 
+        races:[
+
+        ],
+
+        stages: [
+            {
+                title: 'Квалификация'
+            },
+            {
+                title: 'Финал 2'
+            },
+            {
+                title: 'Финал 1'
+            }
+        ],
+
         competitors:[
         ],
+
+        chosenStage: '',
+
+        chosenSex: '',
 
         competitorChosen:{
             bib: '',
@@ -25,19 +44,30 @@ export default {
     },
 
     getters: {
-
+        stages(state){
+            return state.stages
+        },
+        chosenStage(state){
+            return state.chosenStage
+        },
+        chosenSex(state){
+            return state.chosenSex
+        },
         competitors(state){
             return state.competitors
         },
-
         competitorChosen(state){
             return state.competitorChosen
         }
-
     },
 
     mutations: {
-
+        setStage(state, data){
+            state.chosenStage = data;
+        },
+        setSex(state, data){
+            state.chosenSex = data;
+        },
         addCompetitor(state, data){
             state.competitors.push({
                 bib: data.bib,
@@ -49,37 +79,18 @@ export default {
                 city: data.city,
                 region: data.region,
                 school: data.school,
-                team: data.team
-            })
+                team: data.team,
+                Jump1Mark: '',
+                Jump2Mark: '',
+                turns1Mark: '',
+                turns1Red: '',
+                turns2Mark: '',
+                turns2Red: '',
+                turns3Mark: '',
+                turns3Red: '',
+                markRes: ''
+            });
         },
-
-        chooseCompetitor(state, elem){
-
-            elem.parentNode.classList.toggle('competitorsListRow__chosen');
-
-            let container = elem.parentNode.childNodes;
-
-            let dataList = [];
-
-            for (let i in container){
-                i <= (container.length)-1?
-                    dataList.push(container[i].innerText):
-                    null
-            }
-
-            state.competitorChosen.bib = dataList[0];
-            state.competitorChosen.tid = dataList[1];
-            state.competitorChosen.fisCode = dataList[2];
-            state.competitorChosen.fullName = dataList[3];
-            state.competitorChosen.birthYear = dataList[4];
-            state.competitorChosen.rank = dataList[5];
-            state.competitorChosen.city = dataList[6];
-            state.competitorChosen.region = dataList[7];
-            state.competitorChosen.school = dataList[8];
-            state.competitorChosen.team = dataList[9];
-
-        },
-
         fillCompetitor(state, data){
 
             if (data) {
@@ -95,24 +106,24 @@ export default {
 
             }
 
-            // else console.log(0);
+            else console.log(0);
 
         },
-
     },
 
     actions: {
-
-        addCompetitor(store, data){
-            store.commit('addCompetitor', data)
+        setStage(store, data){
+            store.commit('setStage', data)
         },
-
-        chooseCompetitor(store, data){
-            store.commit('chooseCompetitor', data)
+        setSex(store, data){
+            store.commit('setSex', data)
+        },
+        addCompetitor(store, data){
+            store.commit('addCompetitor', data);
         },
 
         fillCompetitor(store, data){
-          store.commit('fillCompetitor', data)
+            store.commit('fillCompetitor', data)
         },
 
         getCompetitor(store,data){
@@ -120,11 +131,5 @@ export default {
                 store.dispatch('fillCompetitor', response.body)
             })
         },
-
-        deleteCompetitor(store, data){
-            store.commit('deleteCompetitor', data)
-        }
-
     }
-
 }
