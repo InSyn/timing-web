@@ -13,6 +13,15 @@
 
       </div>
 
+      <div class="mainDataInput titleWrapper">
+
+        <div class="eventDataInput">
+          <label for="date">Дата проведения</label>
+          <input type="text" id="date" v-model="createdCompetitionData.date">
+        </div>
+
+      </div>
+
       <div class="mainDataInput disciplineWrapper">
 
         <div class="eventDataInput">
@@ -174,6 +183,27 @@
           <div class="eventDataInput">
             <label for="seniorJudgeCity">Город</label>
             <input id="seniorJudgeCity" type="text" v-model="createdCompetitionData.seniorJudge.city">
+          </div>
+
+        </div>
+
+        <div class="mainSectorInputWrapper timingChief">
+
+          <div class="title">Начальник эл. хронометража</div>
+
+          <div class="eventDataInput">
+            <label for="timingChiefFirstName">Фамилия</label>
+            <input id="timingChiefFirstName" type="text" v-model="createdCompetitionData.timingChief.surname">
+          </div>
+
+          <div class="eventDataInput">
+            <label for="timingChiefSecondName">Имя</label>
+            <input id="timingChiefSecondName" type="text" v-model="createdCompetitionData.timingChief.name">
+          </div>
+
+          <div class="eventDataInput">
+            <label for="timingChiefCity">Город</label>
+            <input id="timingChiefCity" type="text" v-model="createdCompetitionData.timingChief.city">
           </div>
 
         </div>
@@ -373,7 +403,7 @@
 
         <div class="eventDataInput">
           <label for="airTemp">Температура воздуха</label>
-          <input id='airTemp' type="text">
+          <input id='airTemp' type="text" v-model="createdCompetitionData.temp">
         </div>
 
       </div>
@@ -382,7 +412,7 @@
 
         <div class="eventDataInput">
           <label for="snowTemp">Температура снега</label>
-          <input id='snowTemp' type="text">
+          <input id='snowTemp' type="text" v-model="createdCompetitionData.tempSnow">
         </div>
 
       </div>
@@ -391,7 +421,7 @@
 
         <div class="eventDataInput">
           <label for="wind">Ветер</label>
-          <input id='wind' type="text">
+          <input id='wind' type="text" v-model="createdCompetitionData.windDir">
         </div>
 
       </div>
@@ -400,7 +430,7 @@
 
         <div class="eventDataInput">
           <label for="windSpeed">Скорость ветра</label>
-          <input id='windSpeed' type="text">
+          <input id='windSpeed' type="text" v-model="createdCompetitionData.windSpeed">
         </div>
 
       </div>
@@ -409,7 +439,7 @@
 
         <div class="eventDataInput">
           <label for="establishingTime">Установочное время</label>
-          <input id='establishingTime' type="text">
+          <input id='establishingTime' type="text" v-model="createdCompetitionData.declaredTime">
         </div>
 
       </div>
@@ -418,7 +448,7 @@
 
         <div class="eventDataInput">
           <label for="slopeType">Склон</label>
-          <input id='slopeType' type="text">
+          <input id='slopeType' type="text" v-model="createdCompetitionData.slopeName">
         </div>
 
       </div>
@@ -427,7 +457,7 @@
 
         <div class="eventDataInput">
           <label for="length">Длина</label>
-          <input id='length' type="text">
+          <input id='length' type="text" v-model="createdCompetitionData.length">
         </div>
 
       </div>
@@ -436,7 +466,7 @@
 
         <div class="eventDataInput">
           <label for="width">Ширина</label>
-          <input id='width' type="text">
+          <input id='width' type="text" v-model="createdCompetitionData.width">
         </div>
 
       </div>
@@ -445,7 +475,7 @@
 
         <div class="eventDataInput">
           <label for="angle">Угол</label>
-          <input id='angle' type="text">
+          <input id='angle' type="text" v-model="createdCompetitionData.angle">
         </div>
 
       </div>
@@ -463,6 +493,24 @@
 
   export default {
 
+    beforeRouteEnter(to, from, next){
+
+      next( vm => {
+
+        vm.loadData(vm)
+
+      });
+
+    },
+
+    beforeRouteLeave(to, from, next){
+
+      this.saveData();
+
+      next()
+
+    },
+
     mounted(){
 
       this.checkFields();
@@ -471,76 +519,12 @@
     },
 
     updated(){
+
+      this.checkFields();
       this.animateAddedOpeners()
     },
 
     name: "competition",
-
-    data(){
-      return {
-
-        competitionData: {
-          title: '',
-          discipline: '',
-          location: '',
-          organization: '',
-          nation: '',
-          timingProvider: '',
-          codex: '',
-          tDelegate: {
-            name: '',
-            surname: '',
-            city: ''
-          },
-          chiefJudge: {
-            name: '',
-            surname:'',
-            city:''
-          },
-          secretary:{
-            name:'',
-            surname:'',
-            city:''
-          },
-          slopeChief:{
-            name:'',
-            surname:'',
-            city:''
-          },
-          seniorJudge:{
-            name:'',
-            surname:'',
-            city:''
-          },
-          judge1:{
-            name:'',
-            surname:'',
-            city:''
-          },
-          judge2:{
-            name:'',
-            surname:'',
-            city:''
-          },
-          judge3:{
-            name:'',
-            surname:'',
-            city:''
-          },
-          judge4:{
-            name:'',
-            surname:'',
-            city:''
-          },
-          judge5:{
-            name:'',
-            surname:'',
-            city:''
-          }
-        }
-
-      }
-    },
 
     computed:{
       ...mapGetters('createEvent', {
@@ -617,7 +601,53 @@
             this.animateInput(addedOpenerInputs[input].lastChild, 'focus');
 
         }
+      },
+
+      saveData(){
+
+        try {
+
+          localStorage.setItem('createdCompetition', JSON.stringify(this.createdCompetitionData))
+
+        } catch (e) {
+
+          console.log(e)
+
+        }
+
+      },
+
+      loadData(vm){
+
+          if (localStorage.getItem('createdCompetition')){
+
+            try {
+
+              let localData = JSON.parse(localStorage.getItem('createdCompetition'));
+
+              for (let i in localData) {
+
+                try {
+
+                  vm.createdCompetitionData[i] = localData[i];
+
+                } catch (e) {
+
+                  console.log(e)
+                }
+
+              }
+
+            } catch (e) {
+
+              console.log(e)
+
+            }
+
+          }
+
       }
+
     }
 
   }

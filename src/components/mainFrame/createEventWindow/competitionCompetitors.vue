@@ -4,10 +4,75 @@
 
     <div class="competitorsMenu">
 
+      <div class="competitorData"
+      @keypress.enter="addCompetitor(competitorChosen) + cleanData()">
+
+        <div class="competitorDataInput">
+          <label for="competitorBib">Bib</label>
+          <input v-model="competitorChosen.bib" type="text" id="competitorBib">
+        </div>
+        <div class="competitorDataInput">
+          <label for="competitorTid">T-Id</label>
+          <input v-model="competitorChosen.tid" type="text" id="competitorTid"
+                 @input="getCompetitor(competitorChosen.tid) + checkLabelsAtChoose()">
+        </div>
+        <div class="competitorDataInput">
+          <label for="competitorFisCode">FIS-Code</label>
+          <input v-model="competitorChosen.fisCode" type="text" id="competitorFisCode">
+        </div>
+        <div class="competitorDataInput">
+          <label for="competitorFullName">Фамилия, Имя</label>
+          <input v-model="competitorChosen.fullName" type="text" id="competitorFullName">
+        </div>
+        <div class="competitorDataInput">
+          <label for="competitorBirthYear">Год рождения</label>
+          <input v-model="competitorChosen.birthYear" type="text" id="competitorBirthYear">
+        </div>
+        <div class="competitorDataInput">
+          <label for="competitorRank">Разряд</label>
+          <input v-model="competitorChosen.rank" type="text" id="competitorRank">
+        </div>
+        <div class="competitorDataInput">
+          <label for="competitorCity">Город</label>
+          <input v-model="competitorChosen.city" type="text" id="competitorCity">
+        </div>
+        <div class="competitorDataInput">
+          <label for="competitorRegion">Регион</label>
+          <input v-model="competitorChosen.region" type="text" id="competitorRegion">
+        </div>
+        <div class="competitorDataInput">
+          <label for="competitorSchool">Школа</label>
+          <input v-model="competitorChosen.school" type="text" id="competitorSchool">
+        </div>
+        <div class="competitorDataInput">
+          <label for="competitorTeam">Команда</label>
+          <input v-model="competitorChosen.team" type="text" id="competitorTeam">
+        </div>
+
+        <div class="competitorSearchWrapper">
+          <div class="competitorSearchIcon" @click="showSearch = !showSearch"></div>
+          <div class="competitorSearchInputs" v-bind:class="{searchActive: showSearch}" @keypress.enter="test()">
+            <div class="searchInputWrapper searchTidWrapper">
+              <label for="searchTid">T-Id</label>
+              <input type="text" id="searchTid">
+            </div>
+            <div class="searchInputWrapper searchBibWrapper">
+              <label for="searchBib">Bib</label>
+              <input type="text" id="searchBib">
+            </div>
+            <div class="searchInputWrapper searchNameWrapper">
+              <label for="searchName">ФИО</label>
+              <input type="text" id="searchName">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
       <div class="competitorsControls">
 
         <div class="competitorsButton newCompetitor"
-             @click="addCompetitor(competitorData) + cleanData()">
+             @click="addCompetitor(competitorChosen) + cleanData()">
           Добавить участника
         </div>
         <div class="competitorsButton changeCompetitor">
@@ -18,59 +83,6 @@
           Удалить участника
         </div>
 
-      </div>
-
-      <div class="competitorData">
-
-        <div class="competitorDataInput">
-          <label for="competitorBib">Bib</label>
-          <input v-model="competitorData.bib" type="text" id="competitorBib">
-        </div>
-        <div class="competitorDataInput">
-          <label for="competitorTid">T-Id</label>
-          <input v-model="competitorData.tid" type="text" id="competitorTid"
-                 @input="getCompetitor(competitorData.tid)"
-                 @keyup.enter="setChosenCompetitor" >
-        </div>
-        <div class="competitorDataInput">
-          <label for="competitorFisCode">FIS-Code</label>
-          <input v-model="competitorData.fisCode" type="text" id="competitorFisCode">
-        </div>
-        <div class="competitorDataInput">
-          <label for="competitorFullName">Фамилия, Имя</label>
-          <input v-model="competitorData.fullName" type="text" id="competitorFullName">
-        </div>
-        <div class="competitorDataInput">
-          <label for="competitorBirthYear">Год рождения</label>
-          <input v-model="competitorData.birthYear" type="text" id="competitorBirthYear">
-        </div>
-        <div class="competitorDataInput">
-          <label for="competitorRank">Разряд</label>
-          <input v-model="competitorData.rank" type="text" id="competitorRank">
-        </div>
-        <div class="competitorDataInput">
-          <label for="competitorCity">Город</label>
-          <input v-model="competitorData.city" type="text" id="competitorCity">
-        </div>
-        <div class="competitorDataInput">
-          <label for="competitorRegion">Регион</label>
-          <input v-model="competitorData.region" type="text" id="competitorRegion">
-        </div>
-        <div class="competitorDataInput">
-          <label for="competitorSchool">Школа</label>
-          <input v-model="competitorData.school" type="text" id="competitorSchool">
-        </div>
-        <div class="competitorDataInput">
-          <label for="competitorTeam">Команда</label>
-          <input v-model="competitorData.team" type="text" id="competitorTeam">
-        </div>
-
-      </div>
-
-
-      <div class="competitorsButton createCompetition"
-           @click="sendCompetition(createdCompetitionData)">
-        Создать соревнование
       </div>
 
     </div>
@@ -96,7 +108,7 @@
 
         <div class="competitorsListRow"
              v-for="(competitor, index) in createdCompetitionData.competitors" :key="index"
-             @click="chooseCompetitor($event.target) + setChosenCompetitor()">
+             @click="chooseCompetitor($event.target) + setChosenCompetitor() + checkLabelsAtChoose()">
 
           <div class="bib">{{competitor.bib}}</div>
           <div class="tid">{{competitor.tid}}</div>
@@ -124,6 +136,25 @@
   import {mapGetters, mapActions} from 'vuex'
 
   export default {
+
+    beforeRouteEnter(to, from, next){
+
+      next( vm => {
+
+        vm.loadData(vm)
+
+      });
+
+    },
+
+    beforeRouteLeave(to, from, next){
+
+      this.saveData();
+
+      this.cleanData();
+      next()
+
+    },
 
     mounted(){
 
@@ -172,7 +203,9 @@
           region: '',
           school: '',
           team: ''
-        }
+        },
+
+        showSearch: false
 
       }
 
@@ -181,10 +214,7 @@
     computed: {
 
       ...mapGetters('competitors', {
-
-        // competitors: 'competitors',
         competitorChosen: 'competitorChosen'
-
       }),
 
       ...mapGetters('createdCompetition', {
@@ -195,22 +225,19 @@
     },
 
     methods: {
-
       ...mapActions('competitors', {
-        // addCompetitor: 'addCompetitor',
         chooseCompetitor: 'chooseCompetitor',
         getCompetitor: 'getCompetitor'
       }),
 
       ...mapActions('createdCompetition', {
         addCompetitor: 'addCompetitor',
-        sendCompetition: 'sendCompetition',
         deleteCompetitor: 'deleteCompetitor'
       }),
 
       cleanData(){
 
-        let data = this.$data.competitorData;
+        let data = this.competitorChosen;
 
         for (let i in data) {
 
@@ -269,31 +296,65 @@
 
       },
 
-      setChosenCompetitor(){
+      setChosenCompetitor(data){
 
-        if(this.competitorChosen.bib)
-        this.competitorData.bib = this.competitorChosen.bib;
-        if(this.competitorChosen.tid)
-        this.competitorData.tid = this.competitorChosen.tid;
-        if(this.competitorChosen.fisCode)
-        this.competitorData.fisCode = this.competitorChosen.fisCode;
-        if(this.competitorChosen.fullName)
-        this.competitorData.fullName = this.competitorChosen.fullName;
-        if(this.competitorChosen.birthYear)
-        this.competitorData.birthYear = this.competitorChosen.birthYear;
-        if(this.competitorChosen.rank)
-        this.competitorData.rank = this.competitorChosen.rank;
-        if(this.competitorChosen.city)
-        this.competitorData.city = this.competitorChosen.city;
-        if(this.competitorChosen.region)
-        this.competitorData.region = this.competitorChosen.region;
-        if(this.competitorChosen.school)
-        this.competitorData.school = this.competitorChosen.school;
-        if(this.competitorChosen.team)
-        this.competitorData.team = this.competitorChosen.team;
+        if ( data ) {
 
-        this.checkLabelsAtChoose()
+          this.competitorData.bib = data.bib;
 
+          this.checkLabelsAtChoose()
+
+        }
+
+      },
+
+      saveData(){
+
+        try {
+
+          localStorage.setItem('createdCompetition', JSON.stringify(this.createdCompetitionData))
+
+        } catch (e) {
+
+          console.log(e)
+
+        }
+
+      },
+
+      loadData(vm){
+
+        if (localStorage.getItem('createdCompetition')){
+
+          try {
+
+            let localData = JSON.parse(localStorage.getItem('createdCompetition'));
+
+            for (let i in localData) {
+
+              try {
+
+                vm.createdCompetitionData[i] = localData[i];
+
+              } catch (e) {
+
+                console.log(e)
+              }
+
+            }
+
+          } catch (e) {
+
+            console.log(e)
+
+          }
+
+        }
+
+      },
+
+      test(data){
+        console.log(data)
       }
 
     }
@@ -309,6 +370,7 @@
 
   .competitorsWrapper{
     display: flex;
+    flex-direction: column;
     height: calc(100% - 50px);
     padding-top: 32px;
 
@@ -317,17 +379,21 @@
       padding: 16px 32px;
 
       .competitorsControls{
+        display: flex;
+        padding: 12px 8px;
+        width: 100%;
 
         .competitorsButton{
           display: flex;
           align-items: center;
           justify-content: center;
+          text-align: center;
           background-color: $buttonBackgroundColor;
           color: $buttonTextColor;
           outline: 0 none;
           border: none;
-          padding: 8px 0;
-          margin-bottom: 8px;
+          padding: 8px 4px;
+          margin-left: 24px;
           font-size: 0.8rem;
           letter-spacing: 0.15px;
           margin-top: auto;
@@ -359,11 +425,14 @@
         }
       }
       .competitorData{
-        padding: 0 4px;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 32px 0 0;
 
         .competitorDataInput{
           position: relative;
-          margin-top: 28px;
+          margin: 8px 12px;
           border-bottom: 1px solid $borderColor;
 
           label{
@@ -372,7 +441,7 @@
             cursor: text;
             top: 0;
             left: 8px;
-            font-size: 1rem;
+            font-size: 0.9rem;
 
 
             &.labelActive{
@@ -393,6 +462,63 @@
             background: rgba(255, 255, 255, 0.1);
           }
         }
+        .competitorSearchWrapper{
+          height: 100%;
+          position: absolute;
+          right: 0;
+          display: flex;
+          align-items: center;
+
+          .competitorSearchIcon{
+            transition: color $transition-time-double;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 0 6px;
+            color: #FFFFFF;
+            cursor: pointer;
+            font-family: "Segoe MDL2 Assets";
+            background-color: $dark_blue-medium;
+
+            &:hover{
+              color: #00a0e3;
+            }
+          }
+          .competitorSearchInputs{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            transition: width $transition-time-double;
+            width: 0;
+            height: 100%;
+            overflow: hidden;
+            border-bottom: 1px solid $dark_blue-medium;
+            border-top: 1px solid $dark_blue-medium;
+            background: rgba(41, 44, 68, 0.4);
+
+            .searchInputWrapper{
+              display: flex;
+              flex-wrap: nowrap;
+              justify-content: space-between;
+              padding: 2px 0 2px 8px;
+
+              label{
+                color: $light_grey-light;
+              }
+              input{
+                margin-left: 8px;
+                background: rgba(41, 44, 68, 0.8);
+                outline: none;
+                color: $light_grey-light;
+                border: none;
+                margin-right: 16px;
+              }
+            }
+          }
+          .searchActive{
+            width: 300px;
+          }
+        }
       }
     }
     .competitorsList{
@@ -400,12 +526,14 @@
       flex-direction: column;
       flex-grow: 1;
       padding: 0 32px 32px 32px;
+      overflow: auto;
 
       .competitorsListHeader{
         display: flex;
         flex-wrap: nowrap;
         align-items: stretch;
         width: 100%;
+        border-bottom: 2px solid $borderColor;
 
         *{
             padding: 8px 4px;
@@ -413,7 +541,6 @@
             align-items: center;
             justify-content: center;
             border-right: 1px solid $borderColor;
-            border-bottom: 1px solid $borderColor;
 
           &:last-child{
             border-right: none;
@@ -544,6 +671,9 @@
         .competitorsListRow__chosen{
           background-color: rgba(255,255,255, 0.4);
         }
+      }
+      .competitorsListBody::-webkit-scrollbar{
+        display: none;
       }
     }
   }

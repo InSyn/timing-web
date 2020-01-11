@@ -28,6 +28,7 @@
 <style lang="scss" scoped>
 
   .createEventWrapper{
+    display: flex;
     height: calc(100% - 100px);
   }
 

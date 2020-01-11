@@ -20,54 +20,68 @@
             <div class="raceCompetitors">
 
                 <div class="competitorDataInput">
-                    <label for="competitorBib">Bib</label>
-                    <input v-model="competitorData.bib" type="text" id="competitorBib">
+
+                    <label for="selectCompetitor">Выбрать участника</label>
+
+                    <select type="text" id="selectCompetitor" class="competitorSelect" v-model="competitorData">
+
+                        <option :value="competitor" :key="index" class="competitorOption" v-for="(competitor, index) in createdCompetitionData.competitors">
+                            {{competitor.tid + ' ' + competitor.fullName}}
+                        </option>
+
+                    </select>
+
                 </div>
-                <div class="competitorDataInput">
-                    <label for="competitorTid">T-Id</label>
-                    <input v-model="competitorData.tid" type="text" id="competitorTid"
-                           @input="getCompetitor(competitorData.tid)"
-                           @keyup.enter="setChosenCompetitor">
-                </div>
-                <div class="competitorDataInput">
-                    <label for="competitorFisCode">FIS-Code</label>
-                    <input v-model="competitorData.fisCode" type="text" id="competitorFisCode">
-                </div>
-                <div class="competitorDataInput">
-                    <label for="competitorFullName">Фамилия, Имя</label>
-                    <input v-model="competitorData.fullName" type="text" id="competitorFullName">
-                </div>
-                <div class="competitorDataInput">
-                    <label for="competitorBirthYear">Год рождения</label>
-                    <input v-model="competitorData.birthYear" type="text" id="competitorBirthYear">
-                </div>
-                <div class="competitorDataInput">
-                    <label for="competitorRank">Разряд</label>
-                    <input v-model="competitorData.rank" type="text" id="competitorRank">
-                </div>
-                <div class="competitorDataInput">
-                    <label for="competitorCity">Город</label>
-                    <input v-model="competitorData.city" type="text" id="competitorCity">
-                </div>
-                <div class="competitorDataInput">
-                    <label for="competitorRegion">Регион</label>
-                    <input v-model="competitorData.region" type="text" id="competitorRegion">
-                </div>
-                <div class="competitorDataInput">
-                    <label for="competitorSchool">Школа</label>
-                    <input v-model="competitorData.school" type="text" id="competitorSchool">
-                </div>
-                <div class="competitorDataInput">
-                    <label for="competitorTeam">Команда</label>
-                    <input v-model="competitorData.team" type="text" id="competitorTeam">
-                </div>
+
+<!--                <div class="competitorDataInput">-->
+<!--                    <label for="competitorBib">Bib</label>-->
+<!--                    <input v-model="competitorData.bib" type="text" id="competitorBib">-->
+<!--                </div>-->
+<!--                <div class="competitorDataInput">-->
+<!--                    <label for="competitorTid">T-Id</label>-->
+<!--                    <input v-model="competitorData.tid" type="text" id="competitorTid"-->
+<!--                           @input="getCompetitor(competitorData.tid)"-->
+<!--                           @keyup.enter="setChosenCompetitor">-->
+<!--                </div>-->
+<!--                <div class="competitorDataInput">-->
+<!--                    <label for="competitorFisCode">FIS-Code</label>-->
+<!--                    <input v-model="competitorData.fisCode" type="text" id="competitorFisCode">-->
+<!--                </div>-->
+<!--                <div class="competitorDataInput">-->
+<!--                    <label for="competitorFullName">Фамилия, Имя</label>-->
+<!--                    <input v-model="competitorData.fullName" type="text" id="competitorFullName">-->
+<!--                </div>-->
+<!--                <div class="competitorDataInput">-->
+<!--                    <label for="competitorBirthYear">Год рождения</label>-->
+<!--                    <input v-model="competitorData.birthYear" type="text" id="competitorBirthYear">-->
+<!--                </div>-->
+<!--                <div class="competitorDataInput">-->
+<!--                    <label for="competitorRank">Разряд</label>-->
+<!--                    <input v-model="competitorData.rank" type="text" id="competitorRank">-->
+<!--                </div>-->
+<!--                <div class="competitorDataInput">-->
+<!--                    <label for="competitorCity">Город</label>-->
+<!--                    <input v-model="competitorData.city" type="text" id="competitorCity">-->
+<!--                </div>-->
+<!--                <div class="competitorDataInput">-->
+<!--                    <label for="competitorRegion">Регион</label>-->
+<!--                    <input v-model="competitorData.region" type="text" id="competitorRegion">-->
+<!--                </div>-->
+<!--                <div class="competitorDataInput">-->
+<!--                    <label for="competitorSchool">Школа</label>-->
+<!--                    <input v-model="competitorData.school" type="text" id="competitorSchool">-->
+<!--                </div>-->
+<!--                <div class="competitorDataInput">-->
+<!--                    <label for="competitorTeam">Команда</label>-->
+<!--                    <input v-model="competitorData.team" type="text" id="competitorTeam">-->
+<!--                </div>-->
 
             </div>
 
             <div class="raceControls">
 
                 <button class="addCompetitor" type="button"
-                        @click="addCompetitor(competitorData) + cleanData()">Добавить участника</button>
+                        @click="addCompetitor(competitorData)">Добавить участника</button>
 
                 <button class="addStage" type="button" @click="addRace(race)">Создать заезд</button>
 
@@ -123,6 +137,24 @@
     export default {
         name: "races",
 
+        beforeRouteLeave(to, from, next){
+
+            this.saveData();
+
+            next()
+
+        },
+
+        beforeRouteUpdate(to, from, next){
+
+            next( vm => {
+
+                vm.loadData()
+
+            })
+
+        },
+
         data(){
 
           return {
@@ -159,6 +191,12 @@
                 chosenStage: 'chosenStage',
                 competitors: 'competitors',
                 competitorChosen: 'competitorChosen'
+
+            }),
+
+            ...mapGetters('createdCompetition', {
+
+                createdCompetitionData: 'createdCompetitionData'
 
             }),
 
@@ -266,6 +304,51 @@
 
             },
 
+            saveData(){
+
+                try {
+
+                    localStorage.setItem('createdCompetition', JSON.stringify(this.createdCompetitionData))
+
+                } catch (e) {
+
+                    console.log(e)
+
+                }
+
+            },
+
+            loadData(vm){
+
+                if (localStorage.getItem('createdCompetition')){
+
+                    try {
+
+                        let localData = JSON.parse(localStorage.getItem('createdCompetition'));
+
+                        for (let i in localData) {
+
+                            try {
+
+                                vm.createdCompetitionData[i] = localData[i];
+
+                            } catch (e) {
+
+                                console.log(e)
+                            }
+
+                        }
+
+                    } catch (e) {
+
+                        console.log(e)
+
+                    }
+
+                }
+
+            }
+
         }
 
     }
@@ -278,12 +361,13 @@
     .racesWrapper{
         display: flex;
         height: 100%;
+        padding: 32px 16px;
 
         .setParametersWrapper {
             display: flex;
             flex-direction: column;
             height: calc(100% - 100px);
-            padding: 16px 32px;
+            padding: 32px 16px;
 
             .racesInputWrapper {
                 display: flex;
@@ -343,6 +427,13 @@
                         font-size: 1rem;
                         padding: 2px 4px;
                     }
+                    .competitorSelect{
+                        padding: 4px 4px;
+                        font-size: 0.8rem;
+                        border: 1px solid rgba(255, 255, 255, 0.3);
+                        outline: transparent;
+                        background-color: rgba(255, 255, 255, 0.4);
+                    }
                 }
             }
 
@@ -373,7 +464,7 @@
             display: flex;
             flex-direction: column;
             flex-grow: 1;
-            padding: 0 32px 32px 32px;
+            padding: 0 32px;
 
             .competitorsListHeader{
                 display: flex;
@@ -382,6 +473,8 @@
                 width: 100%;
 
                 *{
+                    display: flex;
+                    align-items: center;
                     padding: 16px 8px;
                     border-right: 1px solid $borderColor;
                     border-bottom: 1px solid $borderColor;
@@ -433,6 +526,9 @@
                     flex-shrink: 0;
                     width: 150px;
                 }
+            }
+            .competitorsListBody::-webkit-scrollbar-thumb{
+                background-color: crimson;
             }
             .competitorsListBody{
                 display: flex;

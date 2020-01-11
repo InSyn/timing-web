@@ -62,6 +62,7 @@
       .menuItem{
         position: relative;
         margin-left: 16px;
+        cursor: pointer;
 
         .selectedItem{
           transition: transform $transition-time-double;

@@ -80,7 +80,7 @@ export default {
 
         },
 
-        fillCompetitor(state, data){
+        fillCompetitor(state, data) {
 
             if (data) {
 
@@ -93,11 +93,12 @@ export default {
                 state.competitorChosen.school = data.school;
                 state.competitorChosen.team = data.team;
 
+                console.log(data);
+
+                return data
+
             }
-
-            // else console.log(0);
-
-        },
+        }
 
     },
 
@@ -115,14 +116,10 @@ export default {
           store.commit('fillCompetitor', data)
         },
 
-        getCompetitor(store,data){
+        getCompetitor(store, data){
             Vue.http.get('http://labsd.ga/time/web/index.php?r=sportsmen%2Fviewtid&id='+data).then( response => {
                 store.dispatch('fillCompetitor', response.body)
             })
-        },
-
-        deleteCompetitor(store, data){
-            store.commit('deleteCompetitor', data)
         }
 
     }

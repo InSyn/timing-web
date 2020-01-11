@@ -7,6 +7,7 @@ export default {
     state:{
         createdCompetitionData:{
             title: '',
+            date: '',
             discipline: '',
             location: '',
             organization: '',
@@ -35,6 +36,11 @@ export default {
                 city:''
             },
             seniorJudge:{
+                name:'',
+                surname:'',
+                city:''
+            },
+            timingChief: {
                 name:'',
                 surname:'',
                 city:''
@@ -69,7 +75,16 @@ export default {
             ],
             races: [
 
-            ]
+            ],
+            temp: '',
+            tempSnow: '',
+            windDir: '',
+            windSpeed: '',
+            declaredTime: '',
+            slopeName: '',
+            length: '',
+            width: '',
+            angle: ''
 
         },
         competitors: [
@@ -81,6 +96,9 @@ export default {
     getters:{
         createdCompetitionData(state){
             return state.createdCompetitionData
+        },
+        competitors(state){
+            return state.competitors
         }
     },
 
@@ -97,42 +115,56 @@ export default {
             race.sex = data.sex;
             race.competitors = data.competitors;
 
-            state.createdCompetitionData.races.push(race);
+
+            if (race.stage !== '' && race.sex !== '' && race.competitors !== [])
+                state.createdCompetitionData.races.push(race);
+            else
+                console.log('Заезд не заполнен');
+
             console.log(state.createdCompetitionData.races)
         },
 
         addCompetitor(state, data){
-            state.createdCompetitionData.competitors.push({
-                bib: data.bib,
-                tid: data.tid,
-                fisCode: data.fisCode,
-                fullName: data.fullName,
-                birthYear: data.birthYear,
-                rank: data.rank,
-                city: data.city,
-                region: data.region,
-                school: data.school,
-                team: data.team
-            })
+
+            if (data.tid !== '')
+                state.createdCompetitionData.competitors.push({
+                    bib: data.bib,
+                    tid: data.tid,
+                    fisCode: data.fisCode,
+                    fullName: data.fullName,
+                    birthYear: data.birthYear,
+                    rank: data.rank,
+                    city: data.city,
+                    region: data.region,
+                    school: data.school,
+                    team: data.team
+                })
+
         },
 
         deleteCompetitor(state, chosen){
 
             let competitors = state.createdCompetitionData.competitors;
 
-            console.log(competitors);
-            // console.log(chosen);
-
             for (let i in competitors) {
-                if (competitors[i].tid === chosen.tid)
-                    competitors = competitors.splice(competitors.indexOf(competitors[i]), 1)
-                // state.competitors.slice(data)
+
+                if (competitors[i])
+
+                    try {
+                        if (competitors[i].tid === chosen.tid)
+                            competitors = competitors.splice(competitors.indexOf(competitors[i]), 1)
+                        // state.competitors.slice(data)
+                    } catch (e) {
+                        console.log(e)
+                    }
+
             }
 
         }
     },
 
     actions: {
+
         addRace(store, data){
             store.commit('addRace', data)
         },

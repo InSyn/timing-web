@@ -59,23 +59,23 @@
 
   .createEventMenuWrapper{
     display: flex;
-    height: 50px;
-    padding: 16px 32px 0 32px;
+    flex-direction: column;
+    height: fit-content;
+    padding: 32px 16px;
 
     .menuItem{
       cursor: pointer;
-      padding: 4px 8px;
+      padding: 12px 8px;
 
       .itemButton::after{
         content: '';
         transition: width 128ms;
         display: block;
         height: 2px;
-        background-color: #00A0E3;
+        background-color: $dark_blue-light;
         width: 0;
         margin-top: 2px;
         margin-right: auto;
-        margin-left: auto;
       }
     }
     .link-active{
@@ -85,11 +85,10 @@
         transition: width 128ms;
         display: block;
         height: 2px;
-        background-color: #00A0E3;
-        width: 60%;
+        background-color: $dark_blue-light;
+        width: 40%;
         margin-top: 2px;
         margin-right: auto;
-        margin-left: auto;
       }
     }
     .competition{

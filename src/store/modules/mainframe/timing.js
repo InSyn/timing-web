@@ -40,8 +40,6 @@ export default {
 
       state.competitorsList = list;
 
-      console.log(data)
-
     },
     setStarted(state, data){
 
