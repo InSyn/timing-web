@@ -34,7 +34,7 @@
                  :to="{name: 'timing'}"
                  active-class="link-active">
 
-      <div class="itemButton">Хронометраж</div>
+      <div class="itemButton" >Хронометраж</div>
 
     </router-link>
 
@@ -67,6 +67,9 @@
       cursor: pointer;
       padding: 12px 8px;
 
+      .itemButton{
+        width: fit-content;
+      }
       .itemButton::after{
         content: '';
         transition: width 128ms;
@@ -86,7 +89,7 @@
         display: block;
         height: 2px;
         background-color: $dark_blue-light;
-        width: 40%;
+        width: 100%;
         margin-top: 2px;
         margin-right: auto;
       }

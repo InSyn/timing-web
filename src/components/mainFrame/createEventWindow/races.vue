@@ -33,49 +33,6 @@
 
                 </div>
 
-<!--                <div class="competitorDataInput">-->
-<!--                    <label for="competitorBib">Bib</label>-->
-<!--                    <input v-model="competitorData.bib" type="text" id="competitorBib">-->
-<!--                </div>-->
-<!--                <div class="competitorDataInput">-->
-<!--                    <label for="competitorTid">T-Id</label>-->
-<!--                    <input v-model="competitorData.tid" type="text" id="competitorTid"-->
-<!--                           @input="getCompetitor(competitorData.tid)"-->
-<!--                           @keyup.enter="setChosenCompetitor">-->
-<!--                </div>-->
-<!--                <div class="competitorDataInput">-->
-<!--                    <label for="competitorFisCode">FIS-Code</label>-->
-<!--                    <input v-model="competitorData.fisCode" type="text" id="competitorFisCode">-->
-<!--                </div>-->
-<!--                <div class="competitorDataInput">-->
-<!--                    <label for="competitorFullName">Фамилия, Имя</label>-->
-<!--                    <input v-model="competitorData.fullName" type="text" id="competitorFullName">-->
-<!--                </div>-->
-<!--                <div class="competitorDataInput">-->
-<!--                    <label for="competitorBirthYear">Год рождения</label>-->
-<!--                    <input v-model="competitorData.birthYear" type="text" id="competitorBirthYear">-->
-<!--                </div>-->
-<!--                <div class="competitorDataInput">-->
-<!--                    <label for="competitorRank">Разряд</label>-->
-<!--                    <input v-model="competitorData.rank" type="text" id="competitorRank">-->
-<!--                </div>-->
-<!--                <div class="competitorDataInput">-->
-<!--                    <label for="competitorCity">Город</label>-->
-<!--                    <input v-model="competitorData.city" type="text" id="competitorCity">-->
-<!--                </div>-->
-<!--                <div class="competitorDataInput">-->
-<!--                    <label for="competitorRegion">Регион</label>-->
-<!--                    <input v-model="competitorData.region" type="text" id="competitorRegion">-->
-<!--                </div>-->
-<!--                <div class="competitorDataInput">-->
-<!--                    <label for="competitorSchool">Школа</label>-->
-<!--                    <input v-model="competitorData.school" type="text" id="competitorSchool">-->
-<!--                </div>-->
-<!--                <div class="competitorDataInput">-->
-<!--                    <label for="competitorTeam">Команда</label>-->
-<!--                    <input v-model="competitorData.team" type="text" id="competitorTeam">-->
-<!--                </div>-->
-
             </div>
 
             <div class="raceControls">
@@ -109,7 +66,7 @@
             <div class="competitorsListBody">
 
                 <div class="competitorsListRow"
-                     v-for="(competitor, index) in competitors" :key="index">
+                     v-for="(competitor, index) in this.competitors" :key="index">
 
                     <div class="bib">{{competitor.bib}}</div>
                     <div class="tid">{{competitor.tid}}</div>
@@ -418,6 +375,7 @@
 
                     label{
                         font-size: 0.8rem;
+                        margin-bottom: 8px;
                     }
                     input{
                         background: transparent;

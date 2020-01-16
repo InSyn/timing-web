@@ -20,7 +20,7 @@
 
                     <div class="nextCompetitorData">{{createdCompetitionData.races[0].competitors[0].fullName}}</div>
 
-                    <div class="setOnTrackButton" @click="setStarted">
+                    <div class="setOnTrackButton" @click="setStarted()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="green">
                             <path d="M24 12l-10-10v7h-14v6h14v7z"/>
                         </svg>
@@ -62,33 +62,93 @@
                         <div class="judgeMarksWrapper turnsMarks">
 
                             <div class="judgeMarkWrapper judgeTurns1">
+
                                 <div class="title">C1</div>
-                                <div class="mark"></div>
-                                <div class="penalty"></div>
+
+                                <div class="inputsWrapper">
+
+                                    <div class="mark">
+                                        <input type="text" id="tm1">
+                                    </div>
+
+                                    <div class="penalty">
+                                        <input type="text" id="tp1">
+                                    </div>
+
+                                </div>
+
                             </div>
 
                             <div class="judgeMarkWrapper judgeTurns2">
+
                                 <div class="title">C2</div>
-                                <div class="mark"></div>
-                                <div class="penalty"></div>
+
+                                <div class="inputsWrapper">
+
+                                    <div class="mark">
+                                        <input type="text" id="tm2">
+                                    </div>
+
+                                    <div class="penalty">
+                                        <input type="text" id="tp2">
+                                    </div>
+
+                                </div>
+
                             </div>
 
                             <div class="judgeMarkWrapper judgeTurns3">
+
                                 <div class="title">C3</div>
-                                <div class="mark"></div>
-                                <div class="penalty"></div>
+
+                                <div class="inputsWrapper">
+
+                                    <div class="mark">
+                                        <input type="text" id="tm3">
+                                    </div>
+
+                                    <div class="penalty">
+                                        <input type="text" id="tp3">
+                                    </div>
+
+                                </div>
+
                             </div>
 
                             <div class="judgeMarkWrapper judgeTurns4">
+
                                 <div class="title">C4</div>
-                                <div class="mark"></div>
-                                <div class="penalty"></div>
+
+                                <div class="inputsWrapper">
+
+                                    <div class="mark">
+                                        <input type="text" id="tm4">
+                                    </div>
+
+                                    <div class="penalty">
+                                        <input type="text" id="tp4">
+                                    </div>
+
+                                </div>
+
                             </div>
 
                             <div class="judgeMarkWrapper judgeTurns5">
+
                                 <div class="title">C5</div>
-                                <div class="mark"></div>
-                                <div class="penalty"></div>
+
+                                <div class="inputsWrapper">
+
+                                    <div class="mark">
+                                        <input type="text" id="tm5">
+                                    </div>
+
+                                    <div class="penalty">
+                                        <input type="text" id="tp5">
+                                    </div>
+
+                                </div>
+
                             </div>
 
                         </div>
@@ -96,15 +156,39 @@
                         <div class="judgeMarksWrapper jumpsMarks">
 
                             <div class="judgeMarkWrapper judgeJumps1">
+
                                 <div class="title">C6</div>
-                                <div class="mark1"></div>
-                                <div class="mark2"></div>
+
+                                <div class="inputsWrapper">
+
+                                    <div class="mark1">
+                                        <input type="text" id="jm11">
+                                    </div>
+
+                                    <div class="mark22">
+                                        <input type="text" id="jm12">
+                                    </div>
+
+                                </div>
+
                             </div>
 
                             <div class="judgeMarkWrapper judgeJumps2">
+
                                 <div class="title">C7</div>
-                                <div class="mark1"></div>
-                                <div class="mark22"></div>
+
+                                <div class="inputsWrapper">
+
+                                    <div class="mark1">
+                                        <input type="text" id="jm21">
+                                    </div>
+
+                                    <div class="mark22">
+                                        <input type="text" id="jm22">
+                                    </div>
+
+                                </div>
+
                             </div>
 
                         </div>
@@ -245,9 +329,12 @@
             display: flex;
 
             .startListWrapper{
+                display: flex;
+                flex-direction: column;
                 flex-basis: 400px;
 
                 .startList{
+                    flex-grow: 1;
 
                     .competitorWrapper{
                         padding: 2px 0;
@@ -295,8 +382,21 @@
                                 margin-right: 24px;
                             }
                             input{
+                                transition: background-color $transition-time-double;
                                 margin-left: auto;
                                 max-width: 64px;
+                                padding: 4px 6px;
+                                font-size: 1rem;
+                                font-weight: bold;
+                                border: 0;
+                                outline: none;
+                                color: $light_grey-light;
+                                background: rgba(0, 0, 0, 0.2);
+
+                                &:focus{
+                                    background: rgba(255, 255, 255, 0.2);
+                                    color: $dark_grey-dark;
+                                }
                             }
                         }
                     }
@@ -314,6 +414,19 @@
                                 flex-direction: column;
                                 border: 1px solid black;
                                 align-items: center;
+
+                                .inputsWrapper{
+                                    display: flex;
+                                    flex-direction: column;
+                                    flex-grow: 1;
+                                    justify-content: space-around;
+                                    padding: 0px 8px;
+
+                                    input{
+                                        width: 50px;
+                                        font-size: 1rem;
+                                    }
+                                }
                             }
                         }
                         .turnsMarks{
@@ -340,7 +453,11 @@
                         }
                     }
                     .publishButton{
-                        background: rgba(255,255,255, 0.1);
+                        font-weight: bold;
+                        font-size: 1rem;
+                        color: $light_grey-light;
+                        background: rgba($dark_blue-light, 1);
+                        cursor: pointer;
                     }
                     .statusButton_active{
                         background-color: rgba(64,222,64, 0.4);
@@ -354,6 +471,7 @@
 
                         .resultScore{
                             margin-left: 8px;
+                            font-weight: bold;
                         }
                     }
                 }
@@ -361,10 +479,14 @@
         }
         .resultFrameWrapper{
             height: 100%;
+            margin-top: 16px;
             display: flex;
             flex-wrap: nowrap;
 
             .finishListWrapper{
+                border-top: 1px solid $light_grey-light;
+                border-right: 1px solid $light_grey-light;
+                padding: 0 16px;
                 flex-basis: 65%;
 
                 .finishedCompetitorRow{
@@ -376,6 +498,8 @@
                 }
             }
             .resultsWrapper{
+                border-top: 1px solid $light_grey-light;
+                padding: 0 16px;
                 flex-basis: 35%;
 
                 .resultsTitle{
